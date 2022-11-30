@@ -13,19 +13,25 @@ function validarNombre(nombre){
     else if (nombre.length >= 50){
         return `Este campo no puede superar los 50 caracteres`;
     }
+
+    return "";
 }
 
 function validarCiudad(ciudad){
     if(ciudad === ""){
         return `Tenes que seleccionar una ciudad`;
     }
+
+    return "";
 }
 
 function validarDescripcionRegalo(descripcionRegalo){
     if (descripcionRegalo.length === 0){
         return `Tenes que dar una descripción del regalo que te gustaría recibir`;
     }
-    else if (descripcionRegalo.length >= 1000){
+    else if (descripcionRegalo.length >= 100){
         return `Te pasaste un poquito, tratá de escribirlo en menos de 1000 caracteres`;
     }
+
+    return "";
 }
