@@ -1,17 +1,15 @@
 const $formulario = document.querySelector("#carta-a-santa");
-
-const nombre = $formulario.nombre.value;
-const ciudad = $formulario.ciudad.value;
-const comportamiento = $formulario.comportamiento.value;
-const descripcionRegalo = $formulario["descripcion-regalo"].value;
-
+const $botonEnviarForm = document.querySelector("#enviar-carta")
 
 function validarNombre(nombre){
     if (nombre.length === 0){
-        return `Este campo debe tener como mínimo 1 caracter alfabético`;
+        return `El campo nombre debe tener como mínimo 1 caracter alfabético`;
     }
     else if (nombre.length >= 50){
-        return `Este campo no puede superar los 50 caracteres`;
+        return `El campo nombre no puede superar los 50 caracteres`;
+    }
+    else if(!/^[A-z]+$/.test(nombre)){
+        return `El campo nombre solo acepta caracteres alfabeticos`;
     }
 
     return "";
@@ -32,6 +30,54 @@ function validarDescripcionRegalo(descripcionRegalo){
     else if (descripcionRegalo.length >= 100){
         return `Te pasaste un poquito, tratá de escribirlo en menos de 1000 caracteres`;
     }
+    else if (!/^[A-z0-9,\._ ]+$/.test(descripcionRegalo)){
+        return `El campo solo puede tener numeros y letras`;
+    }
 
     return "";
 }
+
+function manejarErrores(errores){
+
+    const keys = Object.keys(errores);
+    keys.forEach(function(key){
+        const error = errores[key];
+
+        if(error){
+            $formulario[key].className="error";
+
+            const $error = document.createElement("li");
+            $error.innerText = error;
+            const $listaErrores = document.querySelector("#errores");
+            $listaErrores.appendChild($error);
+        }else{
+            $formulario[key].className="";
+        }
+    });
+}
+
+
+function validarFormulario(event){
+    const $listaErrores = document.querySelector("#errores");
+        $listaErrores.innerHTML = "";
+
+    const nombre = $formulario.nombre.value;
+    const ciudad = $formulario.ciudad.value;
+    const descripcionRegalo = $formulario["descripcion-regalo"].value;
+
+    const errorNombre = validarNombre(nombre);
+    const errorCiudad = validarCiudad(ciudad);
+    const errorDescripcionRegalo = validarDescripcionRegalo(descripcionRegalo);
+
+    const errores = {
+        nombre : errorNombre,
+        ciudad : errorCiudad,
+        "descripcion-regalo" : errorDescripcionRegalo
+    }
+
+    manejarErrores(errores);
+
+    event.preventDefault();
+}
+
+$botonEnviarForm.onclick = validarFormulario;
